@@ -36,8 +36,8 @@ export function useCommunicateBetweenWindows(): WindowCommunication {
     }
 
     broadcastChannel = new BroadcastChannel<BroadcastMessage>('react-shared-storage', channelOptions)
-    
-    broadcastChannel.onmessage = message => {
+
+    broadcastChannel.onmessage = (message) => {
       if (!isMessage(message)) {
         return
       }
@@ -45,28 +45,28 @@ export function useCommunicateBetweenWindows(): WindowCommunication {
       if (message.senderId === id) {
         return
       }
-     
-      listeners[message.channel]?.forEach(listener => listener(message.payload))
+
+      listeners[message.channel]?.forEach((listener) => listener(message.payload))
     }
 
     return () => {
       broadcastChannel?.close()
     }
-  }, [ listeners ])
+  }, [ id, listeners ])
 
-  const broadcast: BroadcastFunction = useCallback((channel, payload)=> {
+  const broadcast: BroadcastFunction = useCallback((channel, payload) => {
     const message: BroadcastMessage = {
       channel,
       payload,
       senderId: id
     }
-    
+
     broadcastChannel?.postMessage(message)
   }, [ id ])
 
   const subscribe: ListenerSubscription = (channelName, listener): void => {
-    setListeners(listeners => ({
-      ...listeners,
+    setListeners((existingListeners) => ({
+      ...existingListeners,
       [channelName]: [
         ...(listeners[channelName] ?? []),
         listener

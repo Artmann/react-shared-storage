@@ -1,5 +1,5 @@
 import { usePersistentState } from './use-persistent-state'
 
-export { 
+export {
   usePersistentState
 }
