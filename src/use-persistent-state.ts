@@ -1,7 +1,7 @@
 import debounce from 'lodash/debounce'
 import { useState, useEffect } from 'react'
 
-import { useCommunicateBetweenWindows } from './use-communicate-between-windows'
+import { Listener, useCommunicateBetweenWindows } from './use-communicate-between-windows'
 
 type InitialValueFunction<T> = () => T
 
@@ -35,17 +35,21 @@ export function usePersistentState<T>(
   }
 
   const [ value, setValue ] = useState<T>(getInitialValue)
-  const { broadcast, subscribe } = useCommunicateBetweenWindows()
+  const { broadcast, subscribe, unsubscribe } = useCommunicateBetweenWindows()
 
   useEffect(() => {
-    subscribe('state-updated', (message) => {
-      if (message.key !== key) {
+    const listener: Listener = (payload) => {
+      if (payload.key !== key) {
         return
       }
 
-      setValue(message.value)
-    })
-  }, [ key, subscribe ])
+      setValue(payload.value)
+    }
+
+    subscribe('state-updated', listener)
+
+    return () => unsubscribe('state-updated', listener)
+  }, [ key, subscribe, unsubscribe ])
 
   const debouncedSave = debounce(save, saveInterval)
 

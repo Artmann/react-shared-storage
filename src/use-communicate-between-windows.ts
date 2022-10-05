@@ -2,22 +2,24 @@ import { BroadcastChannel } from 'broadcast-channel'
 import { useCallback, useEffect, useState } from 'react'
 import { v4 as createUuid } from 'uuid'
 
-type BroadcastFunction = (channel: string, payload: any) => void
+export type BroadcastFunction = (channel: string, payload: any) => void
 
-type BroadcastMessage = {
+export type BroadcastMessage = {
   channel: string
   payload: any
   senderId: string
 }
 
-type ChannelName = string
+export type ChannelName = string
 
-type Listener = (payload: any) => void
+export type Listener = (payload: any) => void
+
 type ListenerSubscription = (channelName: string, listener: Listener) => void
 
 type WindowCommunication = {
   broadcast: BroadcastFunction,
-  subscribe: ListenerSubscription
+  subscribe: ListenerSubscription,
+  unsubscribe: ListenerSubscription
 }
 
 let broadcastChannel: BroadcastChannel | undefined
@@ -31,7 +33,7 @@ export function useCommunicateBetweenWindows(): WindowCommunication {
       webWorkerSupport: false
     }
 
-    if (process.env.NODE_ENV === 'test') {
+    if (process.env.NODE_ENV?.toLowerCase() === 'test') {
       channelOptions.type = 'simulate'
     }
 
@@ -74,9 +76,17 @@ export function useCommunicateBetweenWindows(): WindowCommunication {
     }))
   }
 
+  const unsubscribe: ListenerSubscription = (channelName, listener): void => {
+    setListeners((existingListeners) => ({
+      ...existingListeners,
+      [channelName]: (listeners[channelName] ?? []).filter((l) => l !== listener)
+    }))
+  }
+
   return {
     broadcast,
-    subscribe
+    subscribe,
+    unsubscribe
   }
 }
 
