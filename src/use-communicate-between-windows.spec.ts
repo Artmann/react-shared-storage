@@ -26,7 +26,6 @@ describe('useCommunicateBetweenWindows', () => {
   it('listens to messages on a channel', async () => {
     const { result: hook1 } = renderHook(() => useCommunicateBetweenWindows())
     const { result: hook2 } = renderHook(() => useCommunicateBetweenWindows())
-    const { result: hook3 } = renderHook(() => useCommunicateBetweenWindows())
 
     const hook1Listener = jest.fn()
     const hook2Listener = jest.fn()
@@ -35,7 +34,7 @@ describe('useCommunicateBetweenWindows', () => {
     act(() => {
       hook1.current.subscribe('my-channel', hook1Listener)
       hook2.current.subscribe('my-channel', hook2Listener)
-      hook3.current.subscribe('another-channel', hook3Listener)
+      hook2.current.subscribe('another-channel', hook3Listener)
 
       hook1.current.broadcast('my-channel', 'Is anoyone there?')
     })
@@ -50,6 +49,6 @@ describe('useCommunicateBetweenWindows', () => {
 
 function sleep(): Promise<void> {
   return new Promise((resolve) => {
-    setTimeout(resolve, 10)
+    setTimeout(resolve, 40)
   })
 }
