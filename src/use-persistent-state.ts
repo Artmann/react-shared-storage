@@ -49,7 +49,8 @@ export function usePersistentState<T>(
     subscribe('state-updated', listener)
 
     return () => unsubscribe('state-updated', listener)
-  }, [ key, subscribe, unsubscribe ])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ key ])
 
   const debouncedSave = debounce(save, saveInterval)
 

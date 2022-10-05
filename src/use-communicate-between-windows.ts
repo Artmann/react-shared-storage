@@ -66,7 +66,7 @@ export function useCommunicateBetweenWindows(): WindowCommunication {
     broadcastChannel?.postMessage(message)
   }, [ id ])
 
-  const subscribe: ListenerSubscription = (channelName, listener): void => {
+  const subscribe: ListenerSubscription = useCallback((channelName, listener): void => {
     setListeners((existingListeners) => ({
       ...existingListeners,
       [channelName]: [
@@ -74,14 +74,14 @@ export function useCommunicateBetweenWindows(): WindowCommunication {
         listener
       ]
     }))
-  }
+  }, [ listeners ])
 
-  const unsubscribe: ListenerSubscription = (channelName, listener): void => {
+  const unsubscribe: ListenerSubscription = useCallback((channelName, listener): void => {
     setListeners((existingListeners) => ({
       ...existingListeners,
       [channelName]: (listeners[channelName] ?? []).filter((l) => l !== listener)
     }))
-  }
+  }, [ listeners ])
 
   return {
     broadcast,
