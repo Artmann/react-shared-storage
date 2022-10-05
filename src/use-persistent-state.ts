@@ -17,12 +17,12 @@ export function usePersistentState<T>(
   initialValue: T | InitialValueFunction<T>,
   options: UsePersistentStateOptions = {}
 ): [ T, SetterFunction<T> ] {
-  const shouldSync = options.shouldSync ?? true 
+  const shouldSync = options.shouldSync ?? true
   const saveInterval = options.saveInterval ?? 200
 
   const getInitialValue = (): T => {
     const savedValue = load<T>(key)
-    
+
     if (savedValue) {
       return savedValue
     }
@@ -33,24 +33,23 @@ export function usePersistentState<T>(
 
     return initialValue
   }
-  
 
-  const [ value, setValue ] = useState<T>(getInitialValue)  
+  const [ value, setValue ] = useState<T>(getInitialValue)
   const { broadcast, subscribe } = useCommunicateBetweenWindows()
 
   useEffect(() => {
-    subscribe('state-updated', message => {
+    subscribe('state-updated', (message) => {
       if (message.key !== key) {
         return
       }
-      
+
       setValue(message.value)
     })
-  }, [])
+  }, [ key, subscribe ])
 
   const debouncedSave = debounce(save, saveInterval)
 
-  const updateValue: SetterFunction<T> = newValue => {
+  const updateValue: SetterFunction<T> = (newValue) => {
     setValue(newValue)
 
     debouncedSave(key, newValue)
@@ -78,7 +77,7 @@ function load<T>(key: string): T | undefined {
 
 function save<T>(key: string, value: T): void {
   const json = JSON.stringify(value)
-  
+
   localStorage.setItem(key, json)
 }
 

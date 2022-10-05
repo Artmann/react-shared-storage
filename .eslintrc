@@ -1,0 +1,20 @@
+{
+  "extends": [
+    "airbnb",
+    "airbnb/hooks",
+    "airbnb-typescript"
+  ],
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "rules": {
+    "@typescript-eslint/comma-dangle": [ "error", "never" ],
+    "@typescript-eslint/no-use-before-define": "off",
+    "@typescript-eslint/semi": [ "error", "never" ],
+    "array-bracket-spacing": [ "error", "always" ],
+    "import/no-extraneous-dependencies": "off",
+    "import/prefer-default-export": "off",
+    "max-len": "off",
+    "semi": [ "error", "never" ]
+  }
+}
