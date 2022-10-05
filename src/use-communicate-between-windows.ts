@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react'
+import { BroadcastChannel } from 'broadcast-channel'
+import { useCallback, useEffect, useState } from 'react'
 import { v4 as createUuid } from 'uuid'
 
 type BroadcastFunction = (channel: string, payload: any) => void
@@ -21,21 +22,22 @@ type WindowCommunication = {
 
 let broadcastChannel: BroadcastChannel | undefined
 
-
 export function useCommunicateBetweenWindows(): WindowCommunication {
-  const id = createUuid()
+  const [ id ] = useState(() => createUuid())
   const [ listeners, setListeners ] = useState<Record<ChannelName, Listener[]>>({})
 
   useEffect(() => {
-    broadcastChannel = new BroadcastChannel('react-shared-storage')
-    
-    broadcastChannel.onmessage = event => {
-      if (event.origin !== window.location.origin) {
-        return
-      }
+    const channelOptions: any = {
+      webWorkerSupport: false
+    }
 
-      const message: BroadcastMessage = event.data
-      
+    if (process.env.NODE_ENV === 'test') {
+      channelOptions.type = 'simulate'
+    }
+
+    broadcastChannel = new BroadcastChannel<BroadcastMessage>('react-shared-storage', channelOptions)
+    
+    broadcastChannel.onmessage = message => {
       if (!isMessage(message)) {
         return
       }
@@ -47,10 +49,12 @@ export function useCommunicateBetweenWindows(): WindowCommunication {
       listeners[message.channel]?.forEach(listener => listener(message.payload))
     }
 
-    return () => broadcastChannel?.close()
+    return () => {
+      broadcastChannel?.close()
+    }
   }, [ listeners ])
 
-  const broadcast: BroadcastFunction = (channel, payload)=> {
+  const broadcast: BroadcastFunction = useCallback((channel, payload)=> {
     const message: BroadcastMessage = {
       channel,
       payload,
@@ -58,7 +62,7 @@ export function useCommunicateBetweenWindows(): WindowCommunication {
     }
     
     broadcastChannel?.postMessage(message)
-  }
+  }, [ id ])
 
   const subscribe: ListenerSubscription = (channelName, listener): void => {
     setListeners(listeners => ({
