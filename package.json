@@ -21,6 +21,17 @@
     "README.md",
     "yarn.lock"
   ],
+  "keywords": [
+    "front-end",
+    "hooks",
+    "localStorage",
+    "mobile",
+    "react",
+    "react hooks",
+    "typescript",
+    "state",
+    "web"
+  ],
   "dependencies": {
     "broadcast-channel": "^4.17.0",
     "lodash": "^4.17.21",
