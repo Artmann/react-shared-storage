@@ -1,7 +1,7 @@
 {
   "name": "react-shared-storage",
   "version": "1.0.0",
-  "main": "src/index.ts",
+  "main": "dist/index.ts",
   "repository": "https://github.com/artmann/react-shared-storage",
   "author": "Christoffer Artmann <Artgaard@gmail.com>",
   "license": "MIT",
@@ -10,6 +10,7 @@
     "build": "tsc",
     "demo": "webpack serve --config ./demo/webpack.config.js",
     "lint": "eslint --ext .ts,.tsx src",
+    "prepublish": "yarn build",
     "test": "cross-env NODE_ENV=test jest --coverage",
     "test:watch": "cross-env NODE_ENV=test jest --watchAll"
   },
