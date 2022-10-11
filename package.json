@@ -1,6 +1,6 @@
 {
   "name": "react-shared-storage",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "dist/index.ts",
   "repository": "https://github.com/artmann/react-shared-storage",
   "author": "Christoffer Artmann <Artgaard@gmail.com>",
