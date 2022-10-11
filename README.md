@@ -77,7 +77,7 @@ The different options you can pass to the `usePersistentState` hook are:
 
 |Name|Default Value|Description|
 |---|---|---|
-|**saveInterval**|`200`|Determines how often the state is synced between windows.|
+|**saveInterval**|`200`|Determines how often the state is saved to local storage.|
 |**shouldSync**|`true`|Used to enable or disable syncing of state between windows.|
 
 
