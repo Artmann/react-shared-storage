@@ -7,13 +7,20 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "build": "tsc",
+    "build": "webpack --color",
     "demo": "webpack serve --config ./demo/webpack.config.js",
     "lint": "eslint --ext .ts,.tsx src",
-    "prepublish": "yarn build",
+    "prepare": "yarn build",
     "test": "cross-env NODE_ENV=test jest --coverage",
     "test:watch": "cross-env NODE_ENV=test jest --watchAll"
   },
+  "files": [
+    "dist/",
+    "LICENSE.md",
+    "package.json",
+    "README.md",
+    "yarn.lock"
+  ],
   "dependencies": {
     "broadcast-channel": "^4.17.0",
     "lodash": "^4.17.21",
@@ -46,6 +53,7 @@
     "react-is": "^18.2.0",
     "source-map-loader": "^4.0.0",
     "styled-components": "^5.3.6",
+    "terser-webpack-plugin": "^5.3.6",
     "ts-jest": "^29.0.3",
     "ts-loader": "^9.4.1",
     "typescript": "^4.8.4",
