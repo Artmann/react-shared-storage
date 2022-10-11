@@ -3,7 +3,7 @@ import { renderHook, act } from '@testing-library/react'
 import { useCommunicateBetweenWindows } from './use-communicate-between-windows'
 
 describe('useCommunicateBetweenWindows', () => {
-  it('listens to messages from other senders', async () => {
+  it('listens to messages from other senders.', async () => {
     const { result: hook1 } = renderHook(() => useCommunicateBetweenWindows())
     const { result: hook2 } = renderHook(() => useCommunicateBetweenWindows())
 
@@ -23,7 +23,7 @@ describe('useCommunicateBetweenWindows', () => {
     expect(hook1Listener).not.toHaveBeenCalled()
   })
 
-  it('listens to messages on a channel', async () => {
+  it('listens to messages on a channel.', async () => {
     const { result: hook1 } = renderHook(() => useCommunicateBetweenWindows())
     const { result: hook2 } = renderHook(() => useCommunicateBetweenWindows())
 
