@@ -71,6 +71,10 @@ export function usePersistentState<T>(
 }
 
 function load<T>(key: string): T | undefined {
+  if (typeof window === 'undefined') {
+    return undefined
+  }
+
   const json = localStorage.getItem(key)
 
   if (!json) {
@@ -81,6 +85,10 @@ function load<T>(key: string): T | undefined {
 }
 
 function save<T>(key: string, value: T): void {
+  if (typeof window === 'undefined') {
+    return
+  }
+
   const json = JSON.stringify(value)
 
   localStorage.setItem(key, json)

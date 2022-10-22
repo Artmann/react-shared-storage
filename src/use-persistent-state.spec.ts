@@ -57,7 +57,7 @@ describe('usePersistentState', () => {
     expect(updatedValue).toEqual('my-new-value')
   })
 
-  it.only('reads values from local storage.', () => {
+  it('reads values from local storage.', () => {
     const { result } = renderHook(() => usePersistentState('message', '', {
       saveInterval: 1
     }))
