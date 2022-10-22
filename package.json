@@ -8,7 +8,7 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "build": "webpack --color",
+    "build": "tsc",
     "demo": "webpack serve --config ./demo/webpack.config.js",
     "lint": "eslint --ext .ts,.tsx src",
     "prepare": "yarn build",
