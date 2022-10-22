@@ -1,1 +1,5 @@
-export * from './use-persistent-state'
+import { usePersistentState } from './use-persistent-state'
+
+export {
+  usePersistentState
+}
